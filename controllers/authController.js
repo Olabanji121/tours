@@ -11,23 +11,21 @@ const signToken = id => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-
   const token = signToken(user.id);
 
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 60 * 1000
     ),
-   
+
     httpOnly: true
   };
 
-  if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
-
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.cookie('jwt', token, cookieOptions);
-  // remove password from output 
-  user.password = undefined
+  // remove password from output
+  user.password = undefined;
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -43,9 +41,9 @@ exports.signup = async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
+      passwordConfirm: req.body.passwordConfirm
       // passwordchangedat: req.body.passwordchangedat,
-      // role: req.body.role           
+      // role: req.body.role
     });
 
     // const payload ={
@@ -62,7 +60,7 @@ exports.signup = async (req, res, next) => {
     //     user: newUser
     //   }
     // });
-    createSendToken(newUser, 201, res)
+    createSendToken(newUser, 201, res);
   } catch (err) {
     res.status(500).json({
       status: 'failed',
@@ -106,7 +104,7 @@ exports.login = async (req, res, next) => {
     //   token
     // });
 
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, res);
   } catch (err) {
     res.status(500).json({
       status: 'error',
@@ -123,6 +121,8 @@ exports.protect = async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   } else {
     return res.status(401).json({ msg: 'No token, authorization denied' });
   }
@@ -245,7 +245,7 @@ exports.resetPassword = async (req, res, next) => {
     //   status: 'success',
     //   token
     // });
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, res);
   } catch (err) {
     res.status(500).json({
       status: 'error',
@@ -278,7 +278,7 @@ exports.updatePassword = async (req, res, next) => {
     //   msg: 'password changed',
     //   token
     // });
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, res);
   } catch (err) {
     res.status(500).json({
       status: 'error',

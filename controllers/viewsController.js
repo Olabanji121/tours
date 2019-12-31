@@ -44,3 +44,33 @@ const tour = await Tour.findOne({slug:req.params.slug}).populate({
       });
 }
 };
+
+
+exports.getLoginForm = async(req, res)=>{
+  try {
+
+    res.status(200).render('login',{
+      title:'Login into Your Account' 
+    })
+    
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      msg: err.message
+    });
+  }
+}
+exports.getSignUpForm = async(req, res)=>{
+  try {
+
+    res.status(200).render('signup',{
+      title:'SignUp for an  Account' 
+    })
+    
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      msg: err.message
+    });
+  }
+}

@@ -11,7 +11,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
-const viewRoute = require('./routes/viewRoute')
+const viewRoute = require('./routes/viewRoute');
+const cookieParser = require('cookie-parser')
 
 const app = express();
 
@@ -43,8 +44,10 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// body parser middleware, reading data from body into req.body
+// body parser middleware, reading data from body into req.body 
 app.use(express.json({ extends: false, limit: '10kb' }));
+// cookie parser reads data from cookies
+app.use(cookieParser())
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -68,10 +71,11 @@ app.use(
 
 
 
-// text middle ware
+// test middle ware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   // console.log(req.headers);
+  console.log(req.cookies); 
 
   next();
 });
