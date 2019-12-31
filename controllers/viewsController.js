@@ -33,7 +33,8 @@ const tour = await Tour.findOne({slug:req.params.slug}).populate({
 
 
   res.status(200).render('tour', {
-    title: 'The Forest Hiker Tour',
+    // title: 'The Forest Hiker Tour',
+    title: tour.name,
     tour
   });
 } catch (err) {
