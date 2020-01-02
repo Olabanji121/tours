@@ -30,7 +30,12 @@ const tour = await Tour.findOne({slug:req.params.slug}).populate({
 })
 // 2) Build template check tour.pug
 // 3)Render template using data from 1)
-
+if (!tour){
+  return res.status(404).render('error', {
+    title: 'Something went Wrong!',
+    msg: 'There is no Tour with this Name'
+  })
+}
 
   res.status(200).render('tour', {
     // title: 'The Forest Hiker Tour',
@@ -54,10 +59,10 @@ exports.getLoginForm = async(req, res)=>{
     })
     
   } catch (err) {
-    res.status(500).json({
-      status: 'error',
+    res.status(404).render('error', {
+      title: 'Something went Wrong!',
       msg: err.message
-    });
+    })
   }
 }
   
@@ -74,4 +79,10 @@ exports.getSignUpForm = async(req, res)=>{
       msg: err.message
     });
   }
+}
+
+exports.getAccount = (req, res)=>{
+  res.status(200).render('account',{
+    title:'Your Account'  
+  })
 }

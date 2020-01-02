@@ -5,7 +5,7 @@ import { dsiplayMap } from './mapbox';
 
 //  dom elemnts
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.from--login');
 const signUpForm = document.querySelector('.form2');
 const logOutBtn = document.querySelector('.nav__el--logout')
 

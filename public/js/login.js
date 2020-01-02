@@ -1,56 +1,48 @@
 import '@babel/polyfill';
 import axios from 'axios';
-import {showAlert} from './alert'
+import { showAlert } from './alert';
 
+export const login = async (email, password) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: 'http://localhost:8000/api/v1/users/login',
+      data: {
+        email,
+        password
+      }
+    });
 
-export const login = async(email, password)=>{
+    console.log(res);
 
-    try {
-        const res= await axios({
-            method: 'POST',
-            url: 'http://localhost:8000/api/v1/users/login', 
-            data:{
-                email,
-                password
-            }
-        });
-
-        console.log(res);
-
-        if(res.data.status === 'success'){
-            showAlert('success','Logged in Successfully!')
-            window.setTimeout(()=>{
-                location.assign('/');
-            }, 1500)
-        }
-     
-        
-    } catch (err) {
-
-    showAlert('error', err.response.data.msg);
-    
-        
+    if (res.data.status === 'success') {
+      showAlert('success', 'Logged in Successfully!');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1000);
     }
-   
-   
-}
+  } catch (err) {
+    showAlert('error', err.response.data.msg);
+  }
+};
 
+export const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:8000/api/v1/users/logout'
+    });
 
-export const logout = async ()=> {
-   try {
-       const res = await axios({
-        method: 'GET',
-        url: 'http://localhost:8000/api/v1/users/logout',  
-       });
+    //    if(res.data.status === 'success') location.reload(true)
+    if (res.data.status === 'success') {
+      showAlert('success', 'Logged Out');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1000);
+    }
+  } catch (err) {
+    console.log(err.response);
 
-       
-       if(res.data.status === 'success') location.reload(true)
-
-
-   } catch (err) {
-       console.log(err.response);
-       
     showAlert('error', 'Error Logging Out Try Aagin!!');
-   } 
-}
-
+  }
+};

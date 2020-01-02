@@ -64,6 +64,7 @@ exports.signup = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       status: 'failed',
+      stack: err.stack,
       message: err.message
     });
   }
@@ -108,11 +109,11 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       status: 'error',
-      msg: err.message
+      msg: err.message,
+      stack: err.stack
     });
   }
 };
-
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'logged out', {
@@ -122,7 +123,6 @@ exports.logout = (req, res) => {
 
   res.status(200).json({ status: 'success' });
 };
-
 
 exports.protect = async (req, res, next) => {
   // 1) Get the token  and check if it there
@@ -164,6 +164,7 @@ exports.protect = async (req, res, next) => {
     }
 
     req.user = currentUser;
+    res.locals.user = currentUser;
   } catch (err) {
     res.status(401).json({ msg: ` Token Error (${err.message}) ` });
   }
@@ -219,7 +220,8 @@ exports.forgotPassword = async (req, res, next) => {
       await user.save({ validateBeforeSave: false });
     res.status(500).json({
       status: 'error',
-      msg: err.message
+      msg: err.message,
+      stack: err.stack
     });
   }
 
@@ -260,7 +262,8 @@ exports.resetPassword = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       status: 'error',
-      msg: err.message
+      msg: err.message,
+      stack: err.stack
     });
   }
 };
@@ -293,24 +296,20 @@ exports.updatePassword = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       status: 'error',
-      msg: err.message
+      msg: err.message,
+      stack: err.stack
     });
   }
 };
 
 // only to show if the user is logged in or not
 exports.isLogin = async (req, res, next) => {
-  try {
-    // 1) Get the token  and check if it there
-
-    if (req.cookies.jwt) {
+  if (req.cookies.jwt) {
+    try {
+     
       // 2) verify  the token
       const decoded = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
-      // console.log(decoded);
-
-      // req.user = decoded.user
-      // req._id = decoded._id
-
+      
       // 3) check if user exists
       const currentUser = await User.findById(decoded.id);
 
@@ -326,14 +325,11 @@ exports.isLogin = async (req, res, next) => {
       // there is a login user and to make the users accessable to the template
       res.locals.user = currentUser;
       return next();
+      
+    } catch (err) {
+      return next();
     }
-
-    return next();
-
-  } catch (err) {
-    
-    return next();
   }
 
-  
+  return next();
 };

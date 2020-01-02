@@ -8642,7 +8642,7 @@ function () {
               (0, _alert.showAlert)('success', 'Logged in Successfully!');
               window.setTimeout(function () {
                 location.assign('/');
-              }, 1500);
+              }, 1000);
             }
 
             _context.next = 11;
@@ -8688,7 +8688,15 @@ function () {
 
           case 3:
             res = _context2.sent;
-            if (res.data.status === 'success') location.reload(true);
+
+            //    if(res.data.status === 'success') location.reload(true)
+            if (res.data.status === 'success') {
+              (0, _alert.showAlert)('success', 'Logged Out');
+              window.setTimeout(function () {
+                location.assign('/');
+              }, 1000);
+            }
+
             _context2.next = 11;
             break;
 
@@ -9105,7 +9113,7 @@ var _mapbox = require("./mapbox");
 
 //  dom elemnts
 var mapBox = document.getElementById('map');
-var loginForm = document.querySelector('.form');
+var loginForm = document.querySelector('.from--login');
 var signUpForm = document.querySelector('.form2');
 var logOutBtn = document.querySelector('.nav__el--logout');
 
