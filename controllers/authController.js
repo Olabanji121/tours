@@ -113,6 +113,17 @@ exports.login = async (req, res, next) => {
   }
 };
 
+
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'logged out', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+
+  res.status(200).json({ status: 'success' });
+};
+
+
 exports.protect = async (req, res, next) => {
   // 1) Get the token  and check if it there
   let token;
@@ -285,4 +296,44 @@ exports.updatePassword = async (req, res, next) => {
       msg: err.message
     });
   }
+};
+
+// only to show if the user is logged in or not
+exports.isLogin = async (req, res, next) => {
+  try {
+    // 1) Get the token  and check if it there
+
+    if (req.cookies.jwt) {
+      // 2) verify  the token
+      const decoded = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+      // console.log(decoded);
+
+      // req.user = decoded.user
+      // req._id = decoded._id
+
+      // 3) check if user exists
+      const currentUser = await User.findById(decoded.id);
+
+      if (!currentUser) {
+        return next();
+      }
+
+      // 4) check if user changed passward after token was issued
+
+      if (currentUser.changededPasswordAfter(decoded.iat)) {
+        return next();
+      }
+      // there is a login user and to make the users accessable to the template
+      res.locals.user = currentUser;
+      return next();
+    }
+
+    return next();
+
+  } catch (err) {
+    
+    return next();
+  }
+
+  
 };

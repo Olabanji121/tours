@@ -17,7 +17,7 @@ exports.getOverview = async (req, res) => {
       msg: err.message
     });
   }
-};
+}; 
    
     
 exports.getTour = async(req, res) => {
@@ -41,7 +41,7 @@ const tour = await Tour.findOne({slug:req.params.slug}).populate({
     res.status(500).json({
         status: 'error',
         msg: err.message
-      });
+      });  
 }
 };
 
@@ -60,6 +60,7 @@ exports.getLoginForm = async(req, res)=>{
     });
   }
 }
+  
 exports.getSignUpForm = async(req, res)=>{
   try {
 
