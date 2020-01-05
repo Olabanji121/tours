@@ -19,7 +19,10 @@ const UserSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please Provide a vaild Email']
   },
 
-  photo: String,
+  photo:{ 
+    type:String,
+    default: "default.jpg" 
+  },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
@@ -110,7 +113,7 @@ UserSchema.methods.changededPasswordAfter = function(jwtTimeStamp) {
       this.passwordchangedat.getTime() / 1000,
       10
     );
-    console.log(changeTimeStamp, jwtTimeStamp);
+    // console.log(changeTimeStamp, jwtTimeStamp);
     return jwtTimeStamp < changeTimeStamp; //100s < 200s
   }
 

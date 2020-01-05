@@ -25,7 +25,7 @@ export const login = async (email, password) => {
     showAlert('error', err.response.data.msg);
   }
 };
-
+ 
 export const logout = async () => {
   try {
     const res = await axios({

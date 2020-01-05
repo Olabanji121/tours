@@ -45,7 +45,9 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // body parser middleware, reading data from body into req.body 
-app.use(express.json({ extends: false, limit: '10kb' }));
+app.use(express.json({ extended: false, limit: '10kb' }));
+// for form encoded with url
+app.use(express.urlencoded({extended:true,limit: '10kb'}))
 // cookie parser reads data from cookies
 app.use(cookieParser())
 

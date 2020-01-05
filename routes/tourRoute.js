@@ -9,7 +9,9 @@ const {
   deleteTour,
   getMonthlyPlan,
   getToursWithin,
-  getDistances
+  getDistances,
+  uploadTourImage,
+  resizeTourImages
 } = require('../controllers/tourController');
 const reviewRouter = require('../routes/reviewRouter');
 
@@ -24,7 +26,7 @@ const router = express.Router();
 //   .route('/:tourId/reviews')
 //   .post(protect, restrictTo('user'), createReview);
 
-router.use('/:tourId/reviews', reviewRouter)
+router.use('/:tourId/reviews', reviewRouter);
 
 // router.param('id', checkID)
 
@@ -32,27 +34,30 @@ router.route('/top-5-cheap').get(aliasTopTours, getAllTours);
 
 router.route('/tour-stats').get(getTourStats);
 
-router.route('/monthly-plan/:year').get(protect, restrictTo('admin', 'lead-guide', 'guide'),getMonthlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(protect, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan);
 
-
-router.route('/tours-within/:distance/center/:latlng/unit/:unit').get(getToursWithin);
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(getToursWithin);
 router.route('/distance/:latlng/unit/:unit').get(getDistances);
-
-
 
 router
   .route('/')
-  .get( getAllTours)
-  .post(protect,  restrictTo('admin', 'lead-guide'), createTours);
+  .get(getAllTours)
+  .post(protect, restrictTo('admin', 'lead-guide'), createTours);
 
 router
   .route('/:id')
   .get(getTourByID)
-  .patch(protect, restrictTo('admin', 'lead-guide'),updateTourById)
+  .patch(
+    protect,
+    restrictTo('admin', 'lead-guide'),
+    uploadTourImage,  
+    resizeTourImages,
+    updateTourById
+  )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
-
-
 module.exports = router;
-
-
