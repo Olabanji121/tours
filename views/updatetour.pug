@@ -1,0 +1,75 @@
+extends base 
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active': ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`/img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content 
+
+    main.main
+        .user-view
+            nav.user-view__menu
+                ul.side-nav
+                    +navItem('#', 'Settings', 'settings', true)
+                    +navItem('#', 'My bookings', 'briefcase')
+                    +navItem('#', 'My reviews', 'star')
+                    +navItem('#', 'Billing', 'credit-card')
+
+                -if(user.role === 'admin')
+                    .admin-nav
+                        h5.admin-nav__heading Admin
+                        ul.side-nav
+                            +navItem('/manage', 'Manage tours', 'map')
+                            +navItem('#', 'create tours', 'plus')
+                            +navItem('#', 'Manage users', 'users')
+                            +navItem('#', ' Manage reviews', 'star')
+                            +navItem('#', 'Manage bookings', 'briefcase')
+
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md= tour.name
+                    //- without API
+                    //- form.form.form-user-data(action='/submit-user-data' method='POST' entype='multipart/form-data')
+                    //- with API
+                    form.form.form-user-tour-data
+                        .form__group
+                            label.form__label(for='name') Name
+                            input#name.form__input(type='text', value=`${tour.name}`, required, name='name')
+                        .form__group.ma-bt-md
+                            label.form__label(for='slug') Slug
+                            input#slug.form__input(type='text', value=`${tour.slug}`, required, name= 'slug')
+                        .form__group.ma-bt-md
+                            label.form__label(for='duration') Duration
+                            input#duration.form__input(type='text', value=`${tour.duration}`, required, name= 'duration')
+                        .form__group.ma-bt-md
+                            label.form__label(for='maxGroupSize') Group Size
+                            input#maxGroupSize.form__input(type='text', value=`${tour.maxGroupSize}`, required, name= 'maxGroupSize')
+                        .form__group.ma-bt-md
+                            label.form__label(for='difficulty') Difficulty
+                            input#difficulty.form__input(type='text', value=`${tour.difficulty}`, required, name= 'difficulty')
+                        .form__group.ma-bt-md
+                            label.form__label(for='price') Price
+                            input#price.form__input(type='text', value=`${tour.price}`, required, name= 'price')
+                        .form__group.ma-bt-md
+                            label.form__label(for='summary') Summary
+                            textarea#summary.form__input(name= 'summary', cols='3', rows='3', required )= tour.summary   
+                        .form__group.ma-bt-md
+                            label.form__label(for='"description') Description
+                            textarea#summary.form__input(name= 'summary', cols='5', rows='10', required )= tour.description   
+                        .form__group.ma-bt-md
+                            label.form__label(for='location') Locations
+                            input#location.form__input(type='text', value=`${tour.locations[0].coordinates}, ${tour.locations[1].coordinates},  ${tour.locations[2].coordinates}`, required, name= 'location', cols='5', rows='5')
+                        .form__group.form__photo-upload    
+                                img.form__user-photo(src=`/img/tours/${tour.imageCover}`, alt='cover image')
+                                img.form__user-photo(src=`/img/tours/${tour.images[0]}`, alt='tour image1')
+                                img.form__user-photo(src=`/img/tours/${tour.images[1]}`, alt='tour image2')
+                                img.form__user-photo(src=`/img/tours/${tour.images[2]}`, alt='tour image3')
+                                input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+                                label(for='photo') Choose new Photo
+                        .form__group.right
+                            button.btn.btn--small.btn--green Update Tour
+
+                

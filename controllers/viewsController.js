@@ -19,6 +19,8 @@ exports.getOverview = async (req, res) => {
     });
   }
 };
+  
+ 
 
 exports.getTour = async (req, res) => {
   try {
@@ -28,6 +30,9 @@ exports.getTour = async (req, res) => {
       path: 'reviews',
       fields: 'review rating user '
     });
+ 
+    //  console.log(req.params);
+     
     // 2) Build template check tour.pug
     // 3)Render template using data from 1)
     if (!tour) {
@@ -35,7 +40,7 @@ exports.getTour = async (req, res) => {
         title: 'Something went Wrong!',
         msg: 'There is no Tour with this Name'
       });
-    }
+    } 
 
     res.status(200).render('tour', {
       // title: 'The Forest Hiker Tour',
@@ -74,36 +79,60 @@ exports.getSignUpForm = async (req, res) => {
       msg: err.message
     });
   }
-};
+}; 
 
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
-    title: 'Your Account'
+    title: 'Your Account'  
   });
+}; 
+
+
+exports.getManageTour = async(req, res)=>{
+  // console.log(req.params);
+  
+  const tours = await Tour.find();
+  res.status(200).render('managetour', {
+    title: 'Manage Tour',
+    tours
+  })
 };
 
-exports.updateUserData = async (req, res, next) => {
-  // console.log('update user', req.body);
 
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        name: req.body.name,
-        email: req.body.email
-      },
-      { new: true, runValidators: true }
-    );
 
-    res.status(200).render('account', {
-      title: 'Your Account',
-      user: updatedUser
-    });
+exports.updateTour=async(req,res)=>{
 
-  } catch (err) {
-    res.status(400).render('error', {
-      title: 'Something went Wrong!',
-      msg: err.message
-    });     
-  } 
-};
+  const tour = await Tour.findOne({ slug: req.params.slug })
+  console.log(tour.images[0]);
+  
+  res.status(200).render('updatetour', {
+    title: 'Update Tour',
+    tour
+  })
+}
+
+// exports.updateUserData = async (req, res, next) => {
+//   // console.log('update user', req.body);
+
+//   try {
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.user.id,
+//       {
+//         name: req.body.name,
+//         email: req.body.email
+//       },
+//       { new: true, runValidators: true }
+//     );
+ 
+//     res.status(200).render('account', {
+//       title: 'Your Account',
+//       user: updatedUser
+//     });
+
+//   } catch (err) {
+//     res.status(400).render('error', {
+//       title: 'Something went Wrong!',
+//       msg: err.message
+//     });     
+//   } 
+// };
