@@ -34,7 +34,10 @@ block content
                     //- without API
                     //- form.form.form-user-data(action='/submit-user-data' method='POST' entype='multipart/form-data')
                     //- with API
-                    form.form.form-user-tour-data
+                    form.form.form-tour
+                        .form__group
+                            label.form__label(for='tourId') TourID
+                            input#id.form__input(type='text', value=`${tour._id}`, required, name='tourId')
                         .form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${tour.name}`, required, name='name')
@@ -57,8 +60,8 @@ block content
                             label.form__label(for='summary') Summary
                             textarea#summary.form__input(name= 'summary', cols='3', rows='3', required )= tour.summary   
                         .form__group.ma-bt-md
-                            label.form__label(for='"description') Description
-                            textarea#summary.form__input(name= 'summary', cols='5', rows='10', required )= tour.description   
+                            label.form__label(for='description') Description
+                            textarea#description.form__input(name= 'summary', cols='5', rows='10', required )= tour.description   
                         .form__group.ma-bt-md
                             label.form__label(for='location') Locations
                             input#location.form__input(type='text', value=`${tour.locations[0].coordinates}, ${tour.locations[1].coordinates},  ${tour.locations[2].coordinates}`, required, name= 'location', cols='5', rows='5')
@@ -67,8 +70,10 @@ block content
                                 img.form__user-photo(src=`/img/tours/${tour.images[0]}`, alt='tour image1')
                                 img.form__user-photo(src=`/img/tours/${tour.images[1]}`, alt='tour image2')
                                 img.form__user-photo(src=`/img/tours/${tour.images[2]}`, alt='tour image3')
-                                input.form__upload(type='file', accept='image/*', id='photo', name='photo')
-                                label(for='photo') Choose new Photo
+                                input.form__upload(type='file', accept='image/*', id='imageCover', name='imageCover')
+                                label(for='imageCover') Choose new Image Cover
+                                input.form__upload(type='file', accept='image/*', id='images', name='images')
+                                label(for='images') Choose new Photo
                         .form__group.right
                             button.btn.btn--small.btn--green Update Tour
 

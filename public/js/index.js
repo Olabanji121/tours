@@ -1,7 +1,8 @@
 import { login, logout } from './login';
 import { signup } from './signup';
 import { dsiplayMap } from './mapbox';
-import {UpdateSettings } from './updateSettings'
+import {UpdateSettings } from './updateSettings';
+import {UpdateTour} from './updateTour';
 
 
 //  dom elemnts
@@ -11,6 +12,7 @@ const signUpForm = document.querySelector('.form2');
 const logOutBtn = document.querySelector('.nav__el--logout')
 const updateBtn = document.querySelector('.form-user-data')
 const updatePasswordBtn = document.querySelector('.form-user-password')
+const updateTourBtn= document.querySelector('.form-tour') 
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -90,3 +92,19 @@ if(updatePasswordBtn){
   })
 }
 
+if(updateTourBtn){
+  updateTourBtn.addEventListener('submit',e=>{
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const slug = document.getElementById('slug').value;
+    const duration =document.getElementById('duration').value
+    const maxGroupSize= document.getElementById('maxGroupSize').value
+    const difficulty=document.getElementById('difficulty').value
+    const price=document.getElementById('price').value
+    const tourID=document.getElementById('id').value
+//     UpdateSettings({name,email}, 'data')
+    
+    UpdateTour({name,slug, duration, maxGroupSize, difficulty, price, tourID});
+  })
+}

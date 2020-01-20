@@ -49,13 +49,13 @@ router
   .post(protect, restrictTo('admin', 'lead-guide'), createTours);
 
 router
-  .route('/:id')
+  .route('/:slug')
   .get(getTourByID)
   .patch(
     protect,
     restrictTo('admin', 'lead-guide'),
-    uploadTourImage,  
-    resizeTourImages,
+    // uploadTourImage,  
+    // resizeTourImages,
     updateTourById
   )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);

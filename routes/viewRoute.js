@@ -1,6 +1,7 @@
 const express = require('express');
 const viewController = require('../controllers/viewsController');
 const authController = require('../controllers/authController');
+const tourController = require('../controllers/tourController')
 
 const router = express.Router();
 
@@ -28,6 +29,13 @@ router.get(
 //   '/submit-user-data',
 //   authController.protect,
 //   viewController.updateUserData
+// );
+
+
+// router.post(
+//   '/submit-tour-data',
+//   authController.protect,
+//   viewController.updateTourData
 // );
 
 module.exports = router;

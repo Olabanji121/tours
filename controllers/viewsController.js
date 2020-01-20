@@ -103,7 +103,7 @@ exports.getManageTour = async(req, res)=>{
 exports.updateTour=async(req,res)=>{
 
   const tour = await Tour.findOne({ slug: req.params.slug })
-  console.log(tour.images[0]);
+  // console.log(tour.images[0]);
   
   res.status(200).render('updatetour', {
     title: 'Update Tour',
@@ -136,3 +136,30 @@ exports.updateTour=async(req,res)=>{
 //     });     
 //   } 
 // };
+
+
+// exports.updateTourData = async (req, res, next) => {
+//     console.log('update user', req.body);
+  
+//     try {
+//       const tour = await Tour.findByIdAndUpdate(
+//         req.params.slug,
+//         {
+//           name: req.body.name
+//         },
+//         { new: true, runValidators: true }
+//       );
+   
+//       res.status(200).render('updatetour', {
+//         title: 'Update Tour',
+//         tour
+//       })
+  
+//     } catch (err) {
+//       res.status(400).render('error', {
+//         title: 'Something went Wrong!',
+//         msg: err.message
+//       });     
+//     } 
+//   };
+  

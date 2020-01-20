@@ -1,7 +1,7 @@
 const User = require('./../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 const crypto = require('crypto');
 
 const signToken = id => {
@@ -58,8 +58,12 @@ exports.signup = async (req, res, next) => {
     //   token,
     //   data: {
     //     user: newUser
-    //   }
+    //   } 
     // });
+    const url = `${req.protocol}://${req.get('host')}/me`; 
+    console.log(url);
+    
+    await new Email (newUser, url).sendWelcome()
     createSendToken(newUser, 201, res);
   } catch (err) {
     res.status(500).json({
@@ -204,11 +208,11 @@ exports.forgotPassword = async (req, res, next) => {
 
     const message = `Forgot your password? Submit a reset request with your new password to ${resetURL}.\nIf you didn't forget your password, please ignire this email!`;
 
-    await sendEmail({
-      email: user.email,
-      subject: 'Your Password rest token (Valid for 10 mins)',
-      message
-    });
+    // await Email({
+    //   email: user.email,
+    //   subject: 'Your Password rest token (Valid for 10 mins)',
+    //   message
+    // });
 
     return res.status(200).json({
       status: 'success',

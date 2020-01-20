@@ -45,17 +45,3 @@ export const UpdateSettings = async (data, type) => {
 };
 
 
-export const UpdateTour = async (data) => {
-    try {
-      const res = await axios({
-        method: 'PATCH',
-        url: `http://localhost:8000/api/v1/tours/${req.params.id}`,
-        data
-      });
-      console.log('result',res); 
-      if (res.data.status === 'success') {
-          showAlert('success', 'Profile Updated Successfully');}
-    } catch (err) {
-      showAlert('error', err.response.data.msg);
-    }
-  };
