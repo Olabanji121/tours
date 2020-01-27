@@ -12,6 +12,10 @@ const connectDB = async () => {
       useFindAndModify: false,
       useCreateIndex: true,
     });
+
+    await mongoose.connection.on('error', function(error) {
+      console.error('Database connection error:', error);
+    });
     console.log("MongoDB connected...");
   } catch (err) {
     console.error(err.message);

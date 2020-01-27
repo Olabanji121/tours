@@ -61,10 +61,11 @@ exports.signup = async (req, res, next) => {
     //   } 
     // });
     const url = `${req.protocol}://${req.get('host')}/me`; 
-    console.log(url);
-    
+    // console.log(url);
     await new Email (newUser, url).sendWelcome()
+    
     createSendToken(newUser, 201, res);
+    
   } catch (err) {
     res.status(500).json({
       status: 'failed',
@@ -206,13 +207,15 @@ exports.forgotPassword = async (req, res, next) => {
       'host'
     )}/api/v1/users/resetPassword/${resetToken}`;
 
-    const message = `Forgot your password? Submit a reset request with your new password to ${resetURL}.\nIf you didn't forget your password, please ignire this email!`;
+    // const message = `Forgot your password? Submit a reset request with your new password to ${resetURL}.\nIf you didn't forget your password, please ignire this email!`;
 
     // await Email({
     //   email: user.email,
     //   subject: 'Your Password rest token (Valid for 10 mins)',
     //   message
     // });
+
+    await new Email(user, resetURL).sendPasswordReset();
 
     return res.status(200).json({
       status: 'success',

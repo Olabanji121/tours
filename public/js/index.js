@@ -3,6 +3,7 @@ import { signup } from './signup';
 import { dsiplayMap } from './mapbox';
 import {UpdateSettings } from './updateSettings';
 import {UpdateTour} from './updateTour';
+import {bookTour} from './stripe';
 
 
 //  dom elemnts
@@ -12,7 +13,8 @@ const signUpForm = document.querySelector('.form2');
 const logOutBtn = document.querySelector('.nav__el--logout')
 const updateBtn = document.querySelector('.form-user-data')
 const updatePasswordBtn = document.querySelector('.form-user-password')
-const updateTourBtn= document.querySelector('.form-tour') 
+const updateTourBtn= document.querySelector('.form-tour')
+const bookBtn = document.getElementById('book-tour')
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -32,7 +34,7 @@ if (loginForm) {
 }
 
 
-if(logOutBtn) logOutBtn.addEventListener('click', logout)
+if(logOutBtn){ logOutBtn.addEventListener('click', logout)}
 
 
 if (signUpForm) {
@@ -106,5 +108,14 @@ if(updateTourBtn){
 //     UpdateSettings({name,email}, 'data')
     
     UpdateTour({name,slug, duration, maxGroupSize, difficulty, price, tourID});
+  })
+}
+
+if(bookBtn){
+  bookBtn.addEventListener('click', e=>{
+    e.target.textContent = 'Processing...'
+    const tourId = e.target.dataset.tourId
+
+    bookTour(tourId)
   })
 }
