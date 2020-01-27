@@ -60,9 +60,9 @@ exports.signup = async (req, res, next) => {
     //     user: newUser
     //   } 
     // });
-    const url = `${req.protocol}://${req.get('host')}/me`; 
+    // const url = `${req.protocol}://${req.get('host')}/me`; 
     // console.log(url);
-    await new Email (newUser, url).sendWelcome()
+    // await new Email (newUser, url).sendWelcome()
     
     createSendToken(newUser, 201, res);
     
@@ -215,7 +215,7 @@ exports.forgotPassword = async (req, res, next) => {
     //   message
     // });
 
-    await new Email(user, resetURL).sendPasswordReset();
+    // await new Email(user, resetURL).sendPasswordReset();
 
     return res.status(200).json({
       status: 'success',
