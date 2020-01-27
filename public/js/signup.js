@@ -8,7 +8,7 @@ import {showAlert} from './alert'
     try {
         const res= await axios({
             method: 'POST',
-            url: 'http://localhost:8000/api/v1/users/signup', 
+            url: '/api/v1/users/signup', 
             data:{
                 name,
                 email,
@@ -17,7 +17,6 @@ import {showAlert} from './alert'
             }
         });  
 
-        console.log(res);
 
         if(res.data.status === 'success'){
             showAlert('success','Account Created Successfully!')

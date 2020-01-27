@@ -14,6 +14,7 @@ const hpp = require('hpp');
 const path = require('path');
 const viewRoute = require('./routes/viewRoute');
 const cookieParser = require('cookie-parser')
+const compression = require('compression')
 
 const app = express();
 
@@ -72,7 +73,7 @@ app.use(
   })
 );
 
-
+app.use(compression())
 
 // test middle ware
 app.use((req, res, next) => {

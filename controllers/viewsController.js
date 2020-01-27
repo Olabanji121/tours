@@ -1,5 +1,6 @@
 const Tour = require('../models/TourModel');
 const User = require('../models/userModel');
+const Booking = require('../models/bookingModel')
 
 exports.getOverview = async (req, res) => {
   try {
@@ -111,6 +112,27 @@ exports.updateTour=async(req,res)=>{
   })
 }
 
+
+exports.getMytours= async (req,res)=>{
+
+   try {
+    //  1 find all bookings
+    const bookings = await Booking.find({user: req.user.id})
+
+    // 2 find tours with the returned Ids 
+    const tourIDs = bookings.map(el => el.tour)
+    const tours= await Tour.find({_id: {$in: tourIDs}})
+    res.status(200).render('bookedOverview',{
+      title: 'My Tours',
+      tours
+    })
+   } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      msg: err.message
+    });
+   }
+}
 // exports.updateUserData = async (req, res, next) => {
 //   // console.log('update user', req.body);
 

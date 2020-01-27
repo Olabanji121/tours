@@ -18,7 +18,7 @@ exports.checkOwner= async(req, res, next)=>{
       .status(404)
       .json({ msg: "No Review with this ID" });
     }
-    console.log(review.user._id);
+    // console.log(review.user._id);
     
     if(review.user._id.toString() !== req.user.id){
       return res

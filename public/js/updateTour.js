@@ -14,7 +14,7 @@ export const UpdateTour = async (
   try {
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:8000/api/v1/tours/5e11ed27e83b193cc0432536`,
+      url: `/api/v1/tours/5e11ed27e83b193cc0432536`,
       
       data: {
         name,
@@ -25,7 +25,7 @@ export const UpdateTour = async (
         price
       }
     });
-    console.log('result', res);
+    
     if (res.data.status === 'success') {
       showAlert('success', 'Profile Updated Successfully');
       window.setTimeout(() => {
